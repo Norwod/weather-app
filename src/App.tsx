@@ -42,10 +42,10 @@ function App() {
   return (
     <div className='App'>
       <Space>
-      <Button onClick={() => changeLanguage("en")}>en</Button>
-      <Button onClick={() => changeLanguage("ru")}>ru</Button>
+        <Button onClick={() => changeLanguage("en")}>en</Button>
+        <Button onClick={() => changeLanguage("ru")}>ru</Button>
       </Space>
-      
+
 
       <h1>Wearther App</h1>
       <div className='search'>
@@ -68,7 +68,6 @@ function App() {
           :
           <h2>
             {t("nothing_found")}
-
           </h2>
         }
       </div>
