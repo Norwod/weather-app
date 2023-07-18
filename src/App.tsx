@@ -1,24 +1,77 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Button, Input } from 'antd';
+import Weather, { WeatherProps } from './components/Weather/Weather';
+import { WeatherType } from './types/WeatherType';
+import Footer from './components/Footer/Footer';
+import { useTranslation } from 'react-i18next';
+
 
 function App() {
+
+  const [city, setCity] = useState('');
+  const [res, setRes] = useState<any>({});
+  const [language, setLanguage] = useState('ru');
+  const [history, setHistory] = useState<string[]>([]);
+  const apiKey = '9d2f2ef83a9413199df042e88d942ec7';
+  
+
+  const inputChangeHandler = (e: any) => {
+    setCity(e.target.value)
+  }
+
+  const searchHandler = () => {
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=${language}&units=metric&appid=9d2f2ef83a9413199df042e88d942ec7`)
+      .then(response => response.json()).then(data => { console.log(data); setRes(data) });
+    setHistory(prev => [...prev, city])
+    console.log(history)
+  }
+
+  const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=${language}&units=metric&appid=9d2f2ef83a9413199df042e88d942ec7`)
+      .then(response => response.json())
+      .then(data => { setRes(data) });
+  }, [language])
+
+
+  const changeLanguage = (lg: any) => {
+    i18n.changeLanguage(lg)
+    setLanguage(lg)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <button onClick={() => changeLanguage("en")}>en</button>
+      <button onClick={() => changeLanguage("ru")}>ru</button>
+
+      <h1>Wearther App</h1>
+      <div className='search'>
+        <Input className='input' placeholder={t("placeholder")} onChange={inputChangeHandler} value={city}></Input>
+        <Button onClick={searchHandler}>{t('search')}</Button>
+      </div>
+      <div>
+        {res.main
+          ?
+          <Weather
+            current_temp={res.main.temp}
+            min_temp={res.main.temp_min}
+            max_temp={res.main.temp_max}
+            feels_like={res.main.feels_like}
+            pressure={res.main.pressure}
+            humidity={res.main.humidity}
+            city={res.name}
+            weather={res.weather[0].description}
+            wind_speed={res.wind.speed} />
+          :
+          'Nothing'
+        }
+      </div>
+      <h2>{t("history")}</h2>
+      {history.map(i => <h3 onClick={()=> setCity(i)}>{i}</h3>)}
+      <Footer />
     </div>
   );
 }

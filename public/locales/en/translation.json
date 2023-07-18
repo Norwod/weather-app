@@ -1,0 +1,17 @@
+{
+    "text": "Hello",
+    "search": "Search",
+    "placeholder": "Enter the city ",
+    "city": "Weather in  ",
+    "weather": "Current weather ",
+    "current_temp": "Current temp ",
+    "feels_like": "Feels like ",
+    "min_temp": "Min temp ",
+    "max_temp": "Max temp ",
+    "humidity": "Humidity ",
+    "humidity_esm": " mm Hg",
+    "pressure": "Pressure ",
+    "wind_speed": "Wind speed ",
+    "ms": "m/s",
+    "history": "History "
+}
