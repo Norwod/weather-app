@@ -13,5 +13,6 @@
     "pressure": "Pressure ",
     "wind_speed": "Wind speed ",
     "ms": "m/s",
-    "history": "History "
+    "history": "History ",
+    "nothing_found": "Nothing found"
 }

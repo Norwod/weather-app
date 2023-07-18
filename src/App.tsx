@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { Button, Input } from 'antd';
-import Weather, { WeatherProps } from './components/Weather/Weather';
-import { WeatherType } from './types/WeatherType';
+import { Button, Input, Space } from 'antd';
+import Weather from './components/Weather/Weather';
 import Footer from './components/Footer/Footer';
 import { useTranslation } from 'react-i18next';
 
@@ -15,7 +13,7 @@ function App() {
   const [language, setLanguage] = useState('ru');
   const [history, setHistory] = useState<string[]>([]);
   const apiKey = '9d2f2ef83a9413199df042e88d942ec7';
-  
+
 
   const inputChangeHandler = (e: any) => {
     setCity(e.target.value)
@@ -23,9 +21,8 @@ function App() {
 
   const searchHandler = () => {
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=${language}&units=metric&appid=9d2f2ef83a9413199df042e88d942ec7`)
-      .then(response => response.json()).then(data => { console.log(data); setRes(data) });
+      .then(response => response.json()).then(data => setRes(data));
     setHistory(prev => [...prev, city])
-    console.log(history)
   }
 
   const { t, i18n } = useTranslation();
@@ -33,7 +30,7 @@ function App() {
   useEffect(() => {
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=${language}&units=metric&appid=9d2f2ef83a9413199df042e88d942ec7`)
       .then(response => response.json())
-      .then(data => { setRes(data) });
+      .then(data => setRes(data));
   }, [language])
 
 
@@ -44,13 +41,16 @@ function App() {
 
   return (
     <div className='App'>
-      <button onClick={() => changeLanguage("en")}>en</button>
-      <button onClick={() => changeLanguage("ru")}>ru</button>
+      <Space>
+      <Button onClick={() => changeLanguage("en")}>en</Button>
+      <Button onClick={() => changeLanguage("ru")}>ru</Button>
+      </Space>
+      
 
       <h1>Wearther App</h1>
       <div className='search'>
         <Input className='input' placeholder={t("placeholder")} onChange={inputChangeHandler} value={city}></Input>
-        <Button onClick={searchHandler}>{t('search')}</Button>
+        <Button type="primary" onClick={searchHandler}>{t('search')}</Button>
       </div>
       <div>
         {res.main
@@ -66,11 +66,14 @@ function App() {
             weather={res.weather[0].description}
             wind_speed={res.wind.speed} />
           :
-          'Nothing'
+          <h2>
+            {t("nothing_found")}
+
+          </h2>
         }
       </div>
       <h2>{t("history")}</h2>
-      {history.map(i => <h3 onClick={()=> setCity(i)}>{i}</h3>)}
+      {history.map(i => <h3 className='history' onClick={() => setCity(i)}>{i}</h3>)}
       <Footer />
     </div>
   );

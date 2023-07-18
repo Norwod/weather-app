@@ -2,6 +2,7 @@
   text-align: center;
   margin: auto;
   width: 50%;
+  padding: 8px;
 }
 
 .search {
@@ -11,4 +12,12 @@
 
 .input {
   width: 30%;
+}
+
+.history {
+  color: gray
+}
+
+.history:hover {
+  color: black;
 }
